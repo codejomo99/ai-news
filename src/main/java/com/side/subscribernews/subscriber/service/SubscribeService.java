@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.side.subscribernews.common.exception.BaseException;
+import com.side.subscribernews.common.exception.CommonErrorCode;
 import com.side.subscribernews.subscriber.Subscriber;
 import com.side.subscribernews.subscriber.repository.SubscriberRepository;
 import com.side.subscribernews.util.MailService;
@@ -19,7 +21,7 @@ public class SubscribeService {
 
 	public void subscribe(String email) {
 		if(subscriberRepository.findByEmail(email).isPresent()){
-			throw new IllegalArgumentException("이미 구독된 메일입니다.");
+			throw new BaseException(CommonErrorCode.USER_ALREADY_EXISTS);
 		}
 
 		String token = UUID.randomUUID().toString();
