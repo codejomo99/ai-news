@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class SubscribeService {
+public class SubscriberService {
 	private final SubscriberRepository subscriberRepository;
 	private final MailService mailService;
 
