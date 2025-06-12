@@ -28,13 +28,13 @@ public class Subscriber {
 
 	private String token;
 	// true 일 때만 메일 발송 대상
-	private boolean isVerified;
+	private boolean verified;
 	// true 일 때만 살아있는 구독자
-	private boolean isActive;
+	private boolean active;
 	private LocalDateTime createdAt;
 
-	public void updateVerified(Subscriber subscriber) {
-		subscriber.isVerified = true;
+	public void updateVerified() {
+		this.verified = true;
 	}
 
 	public void updateToken(String token) {

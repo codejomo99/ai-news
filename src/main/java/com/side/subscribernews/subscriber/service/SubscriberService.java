@@ -30,8 +30,8 @@ public class SubscriberService {
 		Subscriber subscriber = Subscriber.builder()
 			.email(email)
 			.token(token)
-			.isVerified(false)
-			.isActive(true)
+			.verified(false)
+			.active(true)
 			.createdAt(LocalDateTime.now())
 			.build();
 
@@ -43,7 +43,7 @@ public class SubscriberService {
 		Subscriber subscriber = subscriberRepository.findByToken(token)
 			.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 토큰입니다."));
 
-		subscriber.updateVerified(subscriber);
+		subscriber.updateVerified();
 		subscriberRepository.save(subscriber);
 	}
 
