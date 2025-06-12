@@ -1,0 +1,10 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: subscriber-news
+
+
+  gemini:
+    secretKey: ${SECRET_KEY}
+
