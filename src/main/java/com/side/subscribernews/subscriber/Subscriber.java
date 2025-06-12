@@ -1,4 +1,4 @@
-package com.side.subscribernews.Subscriber;
+package com.side.subscribernews.subscriber;
 
 import java.time.LocalDateTime;
 
@@ -26,9 +26,14 @@ public class Subscriber {
 	@Column(nullable = false, unique = true)
 	private String email;
 
+	private String token;
 	// true 일 때만 메일 발송 대상
 	private boolean isVerified;
 	// true 일 때만 살아있는 구독자
 	private boolean isActive;
 	private LocalDateTime createdAt;
+
+	public void updateVerified(Subscriber subscriber) {
+		subscriber.isVerified = true;
+	}
 }
