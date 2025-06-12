@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.side.subscribernews.subscriber.service.SubscribeService;
 
@@ -27,8 +28,20 @@ public class SubscribeController {
 	}
 
 	@GetMapping("/verify")
-	public ResponseEntity<String> verify(@RequestParam("token") String token) {
+	public RedirectView verify(@RequestParam("token") String token) {
 		subscribeService.verify(token);
-		return ResponseEntity.ok("구독 인증이 완료되었습니다. 감사합니다!");
+		return new RedirectView("/verify-success.html");
+	}
+
+	@PostMapping("/unsubscribe")
+	public ResponseEntity<String> unsubscribe(@RequestBody Map<String, String> request) {
+		subscribeService.unsubscribe(request.get("email"));
+		return ResponseEntity.ok("인증 메일이 발송되었습니다.");
+	}
+
+	@GetMapping("/verify-unsubscribe")
+	public RedirectView verifyUnsubscribe(@RequestParam("token") String token) {
+		subscribeService.verifyUnsubscribe(token);
+		return new RedirectView("/unsubscribe-success.html");
 	}
 }

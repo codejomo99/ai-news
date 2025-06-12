@@ -36,4 +36,8 @@ public class Subscriber {
 	public void updateVerified(Subscriber subscriber) {
 		subscriber.isVerified = true;
 	}
+
+	public void updateToken(String token) {
+		this.token = token;
+	}
 }
