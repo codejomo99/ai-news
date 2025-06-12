@@ -28,6 +28,13 @@ class TestSchedulerControllerTest {
 			.active(true)
 			.createdAt(LocalDateTime.now())
 			.build());
+
+		subscriberRepository.save(Subscriber.builder()
+			.email("codejomo99@gmail.com")
+			.verified(true)
+			.active(true)
+			.createdAt(LocalDateTime.now())
+			.build());
 	}
 
 	@Test
