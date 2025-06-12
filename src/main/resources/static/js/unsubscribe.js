@@ -1,7 +1,8 @@
 document.getElementById("unsubscribeForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("email").value;
+    const emailInput = document.getElementById("email");
+    const email = emailInput.value;
     const messageDiv = document.getElementById("message");
 
     if (!email) {
@@ -19,12 +20,17 @@ document.getElementById("unsubscribeForm").addEventListener("submit", async func
         });
 
         if (response.ok) {
-            messageDiv.innerText = "구독 해지가 완료되었습니다.";
+            messageDiv.textContent = '✅ 해제 신청이 완료되었습니다. 메일을 확인해주세요!';
+            messageDiv.style.color = 'green';
+            emailInput.value = '';
         } else {
-            const error = await response.text();
-            messageDiv.innerText = "오류 발생: " + error;
+            const errorData = await response.json();
+            const errorMessage = errorData.error?.message || '알 수 없는 오류가 발생했습니다.';
+            messageDiv.textContent = `❌ 실패: ${errorMessage}`;
+            messageDiv.style.color = 'red';
         }
     } catch (err) {
-        messageDiv.innerText = "요청 실패: " + err.message;
+        messageDiv.textContent = '❌ 오류가 발생했습니다. 다시 시도해주세요.';
+        messageDiv.style.color = 'red';
     }
 });
