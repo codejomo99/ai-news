@@ -1,6 +1,7 @@
 package com.side.subscribernews.subscriber.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -62,5 +63,9 @@ public class SubscriberService {
 			.orElseThrow(() -> new IllegalArgumentException("유효하지 않은 토큰입니다."));
 
 		subscriberRepository.delete(subscriber);
+	}
+
+	public List<Subscriber> getVerifiedSubscribers() {
+		return subscriberRepository.findAllByVerifiedIsTrue();
 	}
 }
