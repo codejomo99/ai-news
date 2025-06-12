@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 뉴스 요약 메일러</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>AI 뉴스 요약 구독</h1>
+    <p>매일 아침, AI가 요약한 주요 뉴스를 이메일로 받아보세요.</p>
+
+    <form id="subscribeForm">
+        <input type="email" id="email" placeholder="이메일 주소를 입력하세요" required />
+        <button type="submit">구독 신청</button>
+    </form>
+
+    <div id="message"></div>
+
+    <!-- 구독 해지 링크 추가 -->
+    <div style="margin-top: 16px; font-size: 12px; color: #888;">
+        구독을 해지하고 싶으신가요? <a href="/unsubscribe.html">여기를 클릭하세요</a>.
+    </div>
+</div>
+
+<script src="/js/subscribe.js"></script>
+</body>
+</html>
