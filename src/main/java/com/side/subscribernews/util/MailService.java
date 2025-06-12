@@ -38,4 +38,14 @@ public class MailService {
 
 		mailSender.send(message);
 	}
+
+	public void sendNews(String email, String summary) {
+		String subject = "AI 뉴스 요약";
+
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(email);
+		message.setSubject(subject);
+		message.setText(summary);
+		mailSender.send(message);
+	}
 }
