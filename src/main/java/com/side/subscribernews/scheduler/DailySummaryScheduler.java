@@ -36,6 +36,7 @@ public class DailySummaryScheduler {
 
 		// 1. 인증된 구독자 목록 조회
 		List<Subscriber> subscriberList = subscriberService.getVerifiedSubscribers();
+		log.info("✅ 인증된 구독자 (총 {}명)", subscriberList.size());
 
 		// 2. 오늘 요약 존재하는지 확인
 		String today = LocalDate.now(ZoneId.of("Asia/Seoul")).toString();
@@ -60,5 +61,9 @@ public class DailySummaryScheduler {
 		}
 
 		log.info("✅ 요약 뉴스 발송 완료 (총 {}명)", subscriberList.size());
+	}
+
+	public void testSendDailySummaries() {
+		sendDailySummaries();
 	}
 }
