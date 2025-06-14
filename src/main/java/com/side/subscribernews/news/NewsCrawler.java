@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-
 public class NewsCrawler {
 
 	// 연합뉴스
@@ -28,7 +27,8 @@ public class NewsCrawler {
 			Element linkElem = item.selectFirst("a[href]");
 
 			// Null 체크
-			if (titleElem == null || contentElem == null || linkElem == null) continue;
+			if (titleElem == null || contentElem == null || linkElem == null)
+				continue;
 
 			String title = titleElem.text();
 			String content = contentElem.text();
@@ -43,9 +43,6 @@ public class NewsCrawler {
 
 		return articles;
 	}
-
-
-
 
 	// 중앙일보
 	public List<NewsArticle> fetchJoongang() throws Exception {
@@ -79,5 +76,38 @@ public class NewsCrawler {
 		return articles;
 	}
 
+	// 한겨레
+	public List<NewsArticle> fetchHaniNews() throws IOException {
+		List<NewsArticle> articles = new ArrayList<>();
+
+		Document doc = Jsoup.connect("https://www.hani.co.kr/arti")
+			.userAgent("Mozilla/5.0")
+			.get();
+
+		Elements items = doc.select("li.ArticleList_item___OGQO");
+
+		for (Element item : items) {
+			Element contentBox = item.selectFirst("div.BaseArticleCard_content__tYkEA");
+			if (contentBox == null) continue;
+
+			Element linkElem = contentBox.selectFirst("a.BaseArticleCard_link__Q3YFK");
+			Element titleElem = contentBox.selectFirst("div.BaseArticleCard_title__TVFqt");
+			Element prologueElem = contentBox.selectFirst("p.BaseArticleCard_prologue__vToX3");
+
+			if (linkElem == null || titleElem == null || prologueElem == null) continue;
+
+			String link = "https://www.hani.co.kr" + linkElem.attr("href");
+			String title = titleElem.text();
+			String content = prologueElem.text();
+
+			articles.add(NewsArticle.builder()
+				.title(title)
+				.url(link)
+				.content(content)
+				.build());
+		}
+
+		return articles;
+	}
 
 }
