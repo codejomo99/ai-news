@@ -1,19 +1,23 @@
 package com.side.subscribernews.util;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.side.subscribernews.news.NewsArticle;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class GeminiClient {
 
@@ -53,20 +57,51 @@ public class GeminiClient {
 		return parts.get(0).getAsJsonObject().get("text").getAsString();
 	}
 
-	public Mono<String> getDailyNewsSummary() {
-		String prompt = """
-			오늘 날짜 기준으로 대한민국에서 주요 언론사들이 가장 많이 보도한 뉴스 3건을 알려줘.
-			각 뉴스는 다음과 같은 형식으로 제공해줘:
-			
-			1. 📰 제목: [뉴스 제목] \s
-			📌 요약: [뉴스 요약] \s
-			🔗 링크: 반드시 실제 기사 URL 포함
-			
-			기사 링크는 Yonhap, Chosun, Hankyoreh, KBS, JTBC 등의 신뢰할 수 있는 뉴스 사이트에서 선택해줘.
-			링크가 없으면 절대 '(링크 없음)' 같은 문장을 넣지 말고, 최소한 유사한 기사라도 찾아서 넣어줘. 형식만 보내주고 다른 말은 절대 보내지 마
-			""";
+	public Mono<String> getDailyNewsSummary(List<NewsArticle> articles) {
+		StringBuilder sb = new StringBuilder();
 
-		return summarize(prompt);
+		// 프롬프트 도입부
+		sb.append("""
+        다음은 여러 언론사(연합뉴스, 중앙일보 등)에서 실시간으로 보도한 주요 뉴스 목록입니다.
+
+        각 뉴스는 제목, 본문, 링크로 구성되어 있으며, 주제가 유사한 뉴스는 하나로 묶어 중복 없이 요약해주세요. 총 3개의 뉴스 주제만 선정해주세요.
+
+        형식은 반드시 아래처럼 출력해주세요:
+
+        📰 제목: [뉴스 제목]
+        📌 요약: [뉴스 핵심 요약]
+        🔗 링크: [뉴스 URL]
+
+        (아래는 뉴스 데이터입니다)
+
+        """);
+
+		int maxLength = 18000;  // Gemini 안전 기준
+		int currentLength = sb.length();
+
+		for (int i = 0; i < articles.size(); i++) {
+			NewsArticle article = articles.get(i);
+
+			// 기사 본문이 너무 길면 자름
+			String content = article.getContent();
+			content = content.length() > 100 ? content.substring(0, 100) + "..." : content;
+
+			String entry = String.format("""
+            기사 %d
+            제목: %s
+            본문: %s
+            링크: %s
+
+            """, i + 1, article.getTitle(), content, article.getUrl());
+
+			// 추가했을 때 총 길이 초과하면 break
+			if (currentLength + entry.length() > maxLength) break;
+
+			sb.append(entry);
+			currentLength += entry.length();
+		}
+		log.info("요청 글자 수: {}",sb.length());
+		return summarize(sb.toString());
 	}
 }
 

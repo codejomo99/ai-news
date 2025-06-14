@@ -1,6 +1,7 @@
 package com.side.subscribernews.scheduler;
 
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,7 @@ class TestSchedulerControllerTest {
 
 	@Test
 	@DisplayName("스케줄러 성공")
-	void testSummaryEmailSend() {
+	void testSummaryEmailSend() throws IOException {
 		dailySummaryScheduler.testSendDailySummaries();
 	}
 }
