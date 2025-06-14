@@ -48,13 +48,37 @@ public class DailySummaryScheduler {
 		Optional<Summary> optionalSummary = summaryRepository.findByDate(today);
 
 		// 3. 정보를 크롤링
+		// 3. 정보를 크롤링
 		log.info("크롤링 시작 !!");
 		List<NewsArticle> allArticles = new ArrayList<>();
-		allArticles.addAll(newsCrawler.fetchHaniNews());
-		allArticles.addAll(newsCrawler.fetchSeoulNews());
-		allArticles.addAll(newsCrawler.fetchYna());
-		allArticles.addAll(newsCrawler.fetchJoongang());
-		log.info("크롤링 끝 !!");
+		// 한겨레
+		try {
+			allArticles.addAll(newsCrawler.fetchHaniNews());
+			log.info("한겨레 크롤링 성공");
+		} catch (Exception e) {
+			log.error("한겨레 크롤링 실패: {}", e.getMessage());
+		}
+		// 서울신문
+		try {
+			allArticles.addAll(newsCrawler.fetchSeoulNews());
+			log.info("서울신문 크롤링 성공");
+		} catch (Exception e) {
+			log.error("서울신문 크롤링 실패: {}", e.getMessage());
+		}
+		// 연합뉴스
+		try {
+			allArticles.addAll(newsCrawler.fetchYna());
+			log.info("연합뉴스 크롤링 성공");
+		} catch (Exception e) {
+			log.error("연합뉴스 크롤링 실패: {}", e.getMessage());
+		}
+		// 중앙일보
+		try {
+			allArticles.addAll(newsCrawler.fetchJoongang());
+			log.info("중앙일보 크롤링 성공");
+		} catch (Exception e) {
+			log.error("중앙일보 크롤링 실패: {}", e.getMessage());
+		}
 
 		String summary;
 		if (optionalSummary.isPresent()) {
