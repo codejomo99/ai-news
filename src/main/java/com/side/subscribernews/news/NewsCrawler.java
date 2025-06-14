@@ -45,4 +45,39 @@ public class NewsCrawler {
 	}
 
 
+
+
+	// 중앙일보
+	public List<NewsArticle> fetchJoongang() throws Exception {
+		List<NewsArticle> articles = new ArrayList<>();
+
+		// 1. 트렌드 뉴스 페이지 접속
+		Document doc = Jsoup.connect("https://www.joongang.co.kr/trend")
+			.userAgent("Mozilla/5.0")
+			.get();
+
+		// 2. 기사 카드 목록 선택
+		Elements cards = doc.select("ul.story_list.story_rank > li.card");
+
+		for (Element card : cards) {
+			Element titleElem = card.selectFirst("h2.headline > a");
+			Element descElem = card.selectFirst("p.description");
+
+			if (titleElem != null && descElem != null) {
+				String title = titleElem.text();                     // 기사 제목
+				String url = titleElem.absUrl("href");               // 기사 링크
+				String content = descElem.text();                    // 기사 요약(본문 일부)
+
+				articles.add(NewsArticle.builder()
+					.title(title)
+					.url(url)
+					.content(content)
+					.build());
+			}
+		}
+
+		return articles;
+	}
+
+
 }
