@@ -64,11 +64,9 @@
 </p>
 
 
-## 🔁 향후 개선 계획
+## 📕 개선 기록
 
-- [ ] **GPT API로 전환**하여 더 정확한 요약 및 실제 기사 링크 포함
-- [ ] 이메일 인증 만료 및 재전송 로직 추가
-- [ ] 실제 배포를 위한 PostgreSQL + EC2 환경 구성
+- [AI 요약 기능 개선](https://github.com/codejomo99/ai-news/wiki/AI-%EC%9A%94%EC%95%BD-%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-%EB%82%B4%EC%97%AD-%F0%9F%A7%A0)
 
 
 ## 📁 디렉토리 구조
