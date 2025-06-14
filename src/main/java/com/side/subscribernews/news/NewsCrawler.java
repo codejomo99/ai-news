@@ -110,4 +110,34 @@ public class NewsCrawler {
 		return articles;
 	}
 
+	public List<NewsArticle> fetchSeoulNews() throws IOException {
+		List<NewsArticle> result = new ArrayList<>();
+		String baseUrl = "https://www.seoul.co.kr";
+
+		Document doc = Jsoup.connect(baseUrl)
+			.userAgent("Mozilla/5.0")
+			.get();
+
+		Elements items = doc.select("li.newsBox_row1");
+
+		for (Element item : items) {
+			Element linkElem = item.selectFirst("a");
+			if (linkElem == null) continue;
+
+			String href = linkElem.absUrl("href");
+			String title = linkElem.text();
+			String body = item.selectFirst("div.body16.color600.lineClamp3.text") != null
+				? item.selectFirst("div.body16.color600.lineClamp3.text").text()
+				: "";
+
+			result.add(NewsArticle.builder()
+				.title(title)
+				.url(href)
+				.content(body)
+				.build());
+		}
+
+		return result;
+	}
+
 }
