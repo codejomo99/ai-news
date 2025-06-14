@@ -8,7 +8,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
+@Service
 public class NewsCrawler {
 
 	// 연합뉴스
@@ -45,7 +47,7 @@ public class NewsCrawler {
 	}
 
 	// 중앙일보
-	public List<NewsArticle> fetchJoongang() throws Exception {
+	public List<NewsArticle> fetchJoongang() throws IOException {
 		List<NewsArticle> articles = new ArrayList<>();
 
 		// 1. 트렌드 뉴스 페이지 접속
